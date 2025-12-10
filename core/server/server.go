@@ -29,8 +29,7 @@ func MainServer() {
 
 	HandleDocs()
 
-	engine.Run(":3000")
-
+	engine.Run(":3002")
 }
 
 func StartEngine() {

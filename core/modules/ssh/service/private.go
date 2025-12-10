@@ -79,3 +79,7 @@ func (s *SSHService) sendCommandAndPrintResult(command string, args ...string) (
 	// Retorna somente o stdout (padrão mais comum)
 	return stdoutBuf.String(), nil
 }
+
+func (s *SSHService) formatTmux(command string) string {
+	return fmt.Sprintf("const cmd = `setsid nohup bash -c '%s' </dev/null >/dev/null 2>&1 &`;", command)
+}

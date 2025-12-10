@@ -5,7 +5,7 @@ Anotações de boas praticas:
 
 QUICK COMMAND:
 
-migrate -source file://migrations -database postgresql://postgres:123@localhost:5432/escritorio-db?sslmode=disable
+migrate -source file://migrations -database postgresql://postgres:123@localhost:5432/control_ssh?sslmode=disable
 
 # **Gerenciando Migrations com `migrate`**
 
@@ -93,4 +93,5 @@ migrate -dir migrations -ext sql down [N]
 | Forçar versão       | `migrate -source file://migrations -database "postgres://..." force X` |
 
 **Mantenha o histórico limpo e consistente!** 🚀
+
 # back-ssh-control

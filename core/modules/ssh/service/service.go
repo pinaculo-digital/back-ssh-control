@@ -16,7 +16,7 @@ func (service *SSHService) Implement(data ssh_dto.ImplementDTO) (string, error) 
 
 	branch := data.Branch
 
-	script := fmt.Sprintf("cd scripts & ./implement_sfu.sh %s", branch)
+	script := fmt.Sprintf("cd ~/scripts && ./implement_sfu.sh %s", branch)
 
 	return service.sendCommandAndPrintResult(service.formatTmux(script))
 

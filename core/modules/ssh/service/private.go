@@ -45,7 +45,7 @@ func (s *SSHService) sendCommandAndPrintResult(command string, args ...string) (
 
 	// Se quiser que a saída também vá para o terminal em tempo real,
 	// use um TeeReader ou um MultiWriter.
-	cmd := exec.Command(command, args...)
+	cmd := exec.Command("bash", "-c", command)
 
 	// Captura a saída para retornar como string
 	cmd.Stdout = &stdoutBuf

@@ -1,0 +1,2935 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Documentação do melhor escritorio do mundo, feito em GO",
+        "title": "Escritorio PINATALK",
+        "contact": {},
+        "version": "@0.0.1"
+    },
+    "basePath": "/",
+    "paths": {
+        "/auth/send-code-to-email": {
+            "post": {
+                "description": "Envia um codigo para o email",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login via email",
+                "parameters": [
+                    {
+                        "description": "Credenciais de login",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth_dto.EmailDto"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/auth/validate-code": {
+            "post": {
+                "description": "Envia o codigo do seu email em troca de um token massa",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Recuperar codigo",
+                "parameters": [
+                    {
+                        "description": "Credenciais de login",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth_dto.EmailCode"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/hub/create-office": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Cria um novo escritório vinculado a um hub",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub"
+                ],
+                "summary": "Cria um novo escritório",
+                "parameters": [
+                    {
+                        "description": "Dados do Escritório",
+                        "name": "office",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/office_dto.CreateOfficeDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o ID do escritório criado",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util_dto.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/office_dto.ResponseCreateOfficeDto"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/hub/list-invitations": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Listagem de convites",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub"
+                ],
+                "summary": "Listar convites",
+                "parameters": [
+                    {
+                        "maximum": 5000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna uma lista de offices",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na validação dos parâmetros",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/hub/list-offices": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Listagem de escritorios",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub"
+                ],
+                "summary": "Listar escritorios do HUB",
+                "parameters": [
+                    {
+                        "maximum": 5000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "ALL",
+                            "OWNER",
+                            "PARTICIPATING"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "OFFICE_FILTER_LIST_ALL",
+                            "OFFICE_FILTER_LIST_OWNER",
+                            "OFFICE_FILTER_LIST_PARTICIPATING"
+                        ],
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna uma lista de offices",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na validação dos parâmetros",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/hub/office/{officeId}/": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub"
+                ],
+                "summary": "Editar seu escritorio",
+                "parameters": [
+                    {
+                        "description": "Dados do Escritório",
+                        "name": "office",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/office_dto.CreateOfficeDto"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/hub/office/{officeId}/accept-invitation": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub/Escritorio"
+                ],
+                "summary": "Processar convite para escritório",
+                "responses": {}
+            }
+        },
+        "/hub/office/{officeId}/generate-invitation": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Gera um token de convite único para permitir que usuários se juntem a um escritório específico",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub/Escritorio"
+                ],
+                "summary": "Gerar token de convite para escritório",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do escritório",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/hub/office/{officeId}/link-user": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Vincula usuário a um escritório existente ou ativa ele novamente caso já tenha tido um vinculo anterior",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub/Escritorio"
+                ],
+                "summary": "Adiciona/Reativa usuário a um escritório",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "65d5f5a5f5a5f5a5f5a5f5a5",
+                        "description": "ID do Office",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados de vinculação",
+                        "name": "users",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/office_dto.AddUserToOfficeDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Confirmação de sucesso",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/hub/office/{officeId}/remove-avatar": {
+            "delete": {
+                "description": "Deletar o avatar do escritorio",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub/Escritorio"
+                ],
+                "summary": "Deletar avatar do escritorio",
+                "responses": {
+                    "200": {
+                        "description": "Resposta de sucesso com mensagem",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação ou requisição inválida",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/hub/office/{officeId}/remove-user/{userId}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Usuário fica inabilitado no sistema (ainda aparecendo em listagens de usuários), não se pode adicionar ele em times ou chats",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub/Escritorio"
+                ],
+                "summary": "Remover usuário do escritorio",
+                "responses": {
+                    "200": {
+                        "description": "Confirmação de sucesso",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/hub/office/{officeId}/send-invitation-to-email": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Manda",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub/Escritorio"
+                ],
+                "summary": "Envia convite para email de usuarios",
+                "parameters": [
+                    {
+                        "description": "Dados do convite",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/office_dto.CreateEmailInvitationsDto"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID do escritório",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/hub/office/{officeId}/update-avatar": {
+            "put": {
+                "description": "Atualiza o avatar do escritorio",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub/Escritorio"
+                ],
+                "summary": "Atualiza avatar do escritorio",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Arquivo de imagem do avatar",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resposta de sucesso com mensagem",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação ou requisição inválida",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/hub/process-invitation": {
+            "post": {
+                "description": "Valida e processa um token de convite, adicionando o usuário ao escritório correspondente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Hub"
+                ],
+                "summary": "Processar convite para escritório",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token de convite",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/office/{officeId}/chat": {
+            "get": {
+                "description": "listagem de chat",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Lista os chats",
+                "parameters": [
+                    {
+                        "maximum": 5000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "Chat radical",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "ALL",
+                            "TEAMS",
+                            "GROUPS",
+                            "UNREADEDS"
+                        ],
+                        "type": "string",
+                        "example": "ALL",
+                        "x-enum-varnames": [
+                            "ALL",
+                            "TEAMS",
+                            "GROUPS",
+                            "UNREADEDS"
+                        ],
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Retorna o ID do chat criado",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util_dto.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/chat_dto.ResponseChatList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Cria uma nova sala de chat",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Cria um novo chat",
+                "parameters": [
+                    {
+                        "description": "Dados do Chat",
+                        "name": "chat",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/chat_dto.CreateChatDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Retorna o ID do chat criado",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/chat/one-a-one/{userId}": {
+            "get": {
+                "description": "Basicamente tenta encontrar um chat privado entre você e outro usuário, se não existir, um vai ser providenciado a você",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Buscar chat one-a-one",
+                "responses": {}
+            }
+        },
+        "/office/{officeId}/chat/{chatId}": {
+            "get": {
+                "description": "pega um chat né",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Pegar Chat",
+                "responses": {
+                    "200": {
+                        "description": "Retorna mensagem de sucesso",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util_dto.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/chat_dto.ChatDto"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deleta uma sala de chat existente, desde que o usuário tenha permissão de administrador",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Deleta um chat",
+                "responses": {
+                    "200": {
+                        "description": "Retorna mensagem de sucesso",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/chat/{chatId}/add-team": {
+            "put": {
+                "description": "Adiciona um time a uma sala de chat ou atualiza role atual do time geral",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat/Time"
+                ],
+                "summary": "Adiciona/Atualiza um time ao chat",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do escritório",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID do chat",
+                        "name": "chatId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados do usuário a ser adicionado",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/chat_participant_dto.AddTeamDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mensagem de sucesso",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação ou requisição inválida",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Usuário sem permissão de administrador",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/chat/{chatId}/add-user": {
+            "put": {
+                "description": "Adiciona um usuário a um chat ou atualiza sua role.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat/Usuario"
+                ],
+                "summary": "Adicionar/Atualizar usuário em chat",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do escritório",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID do chat",
+                        "name": "chatId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados do usuário a ser adicionado",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/chat_participant_dto.AddUserDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mensagem de sucesso",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação ou requisição inválida",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Usuário sem permissão de administrador",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/chat/{chatId}/list-messages": {
+            "get": {
+                "description": "listagem de mensagens",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat/Mensagens"
+                ],
+                "summary": "Lista as mensagens do chat",
+                "parameters": [
+                    {
+                        "maximum": 5000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "Chat radical",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Retorna o ID do chat criado",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util_dto.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/message_dto.ResponseMessageList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/chat/{chatId}/marked-all-messages-as-viewed": {
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat/Mensagens"
+                ],
+                "summary": "Marcar como visualizada todas as mensagens do chat",
+                "responses": {}
+            }
+        },
+        "/office/{officeId}/chat/{chatId}/medias": {
+            "get": {
+                "description": "aaa",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat/Media"
+                ],
+                "summary": "Buscar midias do chat",
+                "parameters": [
+                    {
+                        "maximum": 5000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "types",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Retorna um array com os IDs dos arquivos enviados",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util_dto.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/chat_dto.ResponseChatGallery"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/chat/{chatId}/medias-count": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat/Media"
+                ],
+                "summary": "Contar medias e links do chat",
+                "responses": {
+                    "201": {
+                        "description": "Retorna um array com os IDs dos arquivos enviados",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util_dto.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "total": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/chat/{chatId}/new-message": {
+            "post": {
+                "description": "Adiciona mensagem a um chat existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat/Mensagens"
+                ],
+                "summary": "Cria uma nova mensagem",
+                "parameters": [
+                    {
+                        "description": "Dados da Mensagem",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/message_dto.CreateMessageDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Retorna os dados da mensagem",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util_dto.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/message_dto.MessageDto"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/chat/{chatId}/remove-team/{teamId}": {
+            "delete": {
+                "description": "Remove um time específico de uma sala de chat existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat/Time"
+                ],
+                "summary": "Remover um time de um chat",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do escritório",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID do chat",
+                        "name": "chatId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID do time",
+                        "name": "teamId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Time removido com sucesso",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação ou requisição inválida",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Usuário sem permissão de administrador",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/chat/{chatId}/remove-user/{userId}": {
+            "delete": {
+                "description": "Remove um usuário específico de uma sala de chat existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat/Usuario"
+                ],
+                "summary": "Remover um usuário de um chat",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do escritório",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID do chat",
+                        "name": "chatId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID do usuário",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário removido com sucesso",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação ou requisição inválida",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Usuário sem permissão de administrador",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/chat/{chatId}/update-avatar": {
+            "put": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Atualiza avatar do chat",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Arquivo de imagem do avatar",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resposta de sucesso com mensagem",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação ou requisição inválida",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/chat/{chatId}/upload-media": {
+            "post": {
+                "description": "Faz o upload de múltiplos arquivos de mídia para um chat especificado, associando-os ao usuário autenticado. Frontend deve associar os fileIDs com a mensagem que deseja enviar na rota de envio de mensagem",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Chat/Media"
+                ],
+                "summary": "Fazer upload de múltiplos arquivos de mídia para um chat",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do chat para o qual a mídia será enviada",
+                        "name": "chatId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Arquivos de mídia para upload",
+                        "name": "files",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Retorna um array com os IDs dos arquivos enviados",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util_dto.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/chat_controller.uploadMediaChat"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/notifications": {
+            "get": {
+                "description": "Recupera uma lista paginada de notificações para um usuário e escritório específicos com filtro opcional de leitura",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notificacao"
+                ],
+                "summary": "Listar notificações para um usuário",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do escritório",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Filtrar por status de leitura",
+                        "name": "read",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "Número da página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Itens por página",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/office/{officeId}/notifications/{notificationId}/read": {
+            "put": {
+                "description": "Marca uma notificação específica como lida",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Notificacao"
+                ],
+                "summary": "Marcar uma notificação como lida",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID da notificação",
+                        "name": "notificationId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/room": {
+            "post": {
+                "description": "SFU chama essa rota para criar um chat temporario vincuulado a ele",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Room"
+                ],
+                "summary": "Cria uma nova room (SFU EXCLUSIVE)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do escritório",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/office/{officeId}/room/delete-chat/{chatId}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Room"
+                ],
+                "summary": "Delete chat room (SFU EXCLUSIVE)",
+                "parameters": [
+                    {
+                        "maximum": 5000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Retorna o ID do chat criado",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/team": {
+            "get": {
+                "description": "Retorna uma lista paginada de todos os times disponíveis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Time"
+                ],
+                "summary": "Listar todos os times",
+                "parameters": [
+                    {
+                        "maximum": 5000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            },
+            "post": {
+                "description": "Cria um time e um chat associado",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Time"
+                ],
+                "summary": "Criar time",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Office ID",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Team creation data",
+                        "name": "team",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/team_dto.CreateTeam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returns the created team ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request data",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/team/{teamId}": {
+            "get": {
+                "description": "Retorna os detalhes completos de um time específico pelo ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Time"
+                ],
+                "summary": "Obter time específico",
+                "responses": {}
+            },
+            "put": {
+                "description": "Cria um time e um chat associado",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Time"
+                ],
+                "summary": "Criar time",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Office ID",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Team creation data",
+                        "name": "team",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/team_dto.CreateTeam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returns the created team ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request data",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Exclui dados do time (talvez apenas desabilitar dependendo do decorrer do projeto)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Time"
+                ],
+                "summary": "Excluir time",
+                "responses": {}
+            }
+        },
+        "/office/{officeId}/team/{teamId}/add-member": {
+            "post": {
+                "description": "Adiciona um membro e associa ele a tudo do time",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Time"
+                ],
+                "summary": "Adicionar membro",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Office ID",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Team member data",
+                        "name": "team",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/team_dto.PutMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returns the created team ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request data",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/team/{teamId}/edit-member": {
+            "put": {
+                "description": "Edita a role do membro do time",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Time"
+                ],
+                "summary": "Editar membro",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Office ID",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Team member data",
+                        "name": "team",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/team_dto.PutMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returns the created team ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request data",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/team/{teamId}/remove-member/{userId}": {
+            "delete": {
+                "description": "Remove um membro e dessacoia de chats",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Time"
+                ],
+                "summary": "Remover membro",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request data",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/user": {
+            "get": {
+                "description": "Recupera uma lista de usuários associados ao escritório especificado, filtrada",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Usuário/Escritorio"
+                ],
+                "summary": "Listar usuários de um escritório",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "ID do escritório",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "active",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 5000,
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "name": "teams",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resposta de sucesso com a lista de usuários",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util_dto.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/user_office_dto.ListResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Requisição inválida com mensagem de erro",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/user/remove-avatar": {
+            "delete": {
+                "description": "Deleta o avatar do usuário",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Usuário/Escritorio"
+                ],
+                "summary": "Deleta avatar do usuário",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Arquivo de imagem do avatar",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resposta de sucesso com mensagem",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação ou requisição inválida",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/user/update-avatar": {
+            "put": {
+                "description": "Atualiza o avatar do usuário",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Usuário/Escritorio"
+                ],
+                "summary": "Atualiza avatar do usuário",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Arquivo de imagem do avatar",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resposta de sucesso com mensagem",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação ou requisição inválida",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/user/update-info": {
+            "put": {
+                "description": "Atualiza as informações do usuário (fornecidas no corpo da requisição) para o usuário e escritório especificados.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Usuário/Escritorio"
+                ],
+                "summary": "Atualiza informações do usuário em um escritório",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do escritório",
+                        "name": "officeId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Informações do usuário a serem atualizadas",
+                        "name": "userInfo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_office_dto.UserOfficeInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resposta de sucesso com mensagem",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/office/{officeId}/user/{userId}": {
+            "get": {
+                "description": "Retorna informações dele",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Usuário/Escritorio"
+                ],
+                "summary": "Pegar usuário do escritorio",
+                "responses": {
+                    "200": {
+                        "description": "Resposta de sucesso com a lista de usuários",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Requisição inválida com mensagem de erro",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/user/info": {
+            "get": {
+                "description": "Alguem me da um estagiario 2.0",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Informações de usuário logado",
+                "operationId": "userController_GetUserInfo",
+                "responses": {
+                    "200": {
+                        "description": "Resposta de sucesso com mensagem",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/util_dto.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/user_dto.User"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Alguem me da um estagiario 2.0",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Atualiza informações essenciais do usuário",
+                "responses": {
+                    "200": {
+                        "description": "Resposta de sucesso com mensagem",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação ou requisição inválida",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "auth_dto.EmailCode": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "exemplo@mail.com"
+                }
+            }
+        },
+        "auth_dto.EmailDto": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "exemplo@mail.com"
+                }
+            }
+        },
+        "chat_controller.uploadMediaChat": {
+            "type": "object",
+            "properties": {
+                "fileIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "123"
+                    ]
+                }
+            }
+        },
+        "chat_dto.ChatDto": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "example": "2025-10-10T15:04:05Z"
+                },
+                "description": {
+                    "type": "string",
+                    "example": "Chat principal do time Alpha"
+                },
+                "flag": {
+                    "type": "string",
+                    "example": "general"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "123"
+                },
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/message_dto.MessageDto"
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Equipe de Projeto Alpha"
+                },
+                "participants": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/chat_shared.User"
+                    }
+                },
+                "teams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/team_dto.ListTeam"
+                    }
+                },
+                "totalMentions": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "totalUnreaded": {
+                    "type": "integer",
+                    "example": 4
+                }
+            }
+        },
+        "chat_dto.CreateChatDto": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "example": "Canal para discussões da equipe de marketing"
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "example": "Novo Canal de Marketing"
+                }
+            }
+        },
+        "chat_dto.ENUM_FILTER_CHAT": {
+            "type": "string",
+            "enum": [
+                "ALL",
+                "TEAMS",
+                "GROUPS",
+                "UNREADEDS"
+            ],
+            "x-enum-varnames": [
+                "ALL",
+                "TEAMS",
+                "GROUPS",
+                "UNREADEDS"
+            ]
+        },
+        "chat_dto.MediaFromGallery": {
+            "type": "object",
+            "properties": {
+                "fileId": {
+                    "type": "string",
+                    "example": "file-789"
+                },
+                "linkedTo": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/chat_dto.MediaLinkedTo"
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "example": "documento.pdf"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string",
+                    "example": "https://cdn.exemplo.com/uploads/doc.pdf"
+                }
+            }
+        },
+        "chat_dto.MediaLinkedTo": {
+            "type": "object",
+            "properties": {
+                "messageId": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/chat_shared.User"
+                }
+            }
+        },
+        "chat_dto.ResponseChatGallery": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/chat_dto.MediaFromGallery"
+                    }
+                },
+                "limit": {
+                    "type": "integer",
+                    "maximum": 5000,
+                    "minimum": 1,
+                    "example": 10
+                },
+                "page": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "chat_dto.ResponseChatList": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/chat_dto.ChatDto"
+                    }
+                },
+                "limit": {
+                    "type": "integer",
+                    "maximum": 5000,
+                    "minimum": 1,
+                    "example": 10
+                },
+                "page": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "chat_participant_dto.AddTeamDto": {
+            "type": "object",
+            "properties": {
+                "role": {
+                    "type": "string",
+                    "example": "admin"
+                },
+                "teamId": {
+                    "type": "string",
+                    "example": "team-xyz-789"
+                }
+            }
+        },
+        "chat_participant_dto.AddUserDto": {
+            "type": "object",
+            "properties": {
+                "role": {
+                    "type": "string",
+                    "example": "member"
+                },
+                "userId": {
+                    "type": "string",
+                    "example": "user-abc-123"
+                }
+            }
+        },
+        "chat_shared.Media": {
+            "type": "object",
+            "properties": {
+                "fileId": {
+                    "type": "string",
+                    "example": "file-789"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "documento.pdf"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string",
+                    "example": "https://cdn.exemplo.com/uploads/doc.pdf"
+                }
+            }
+        },
+        "chat_shared.User": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "avatar": {
+                    "type": "string",
+                    "example": "https://cdn.exemplo.com/avatar123.png"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "joao.silva@empresa.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "user-123"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string",
+                    "example": "João Silva"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "moderator"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "online"
+                }
+            }
+        },
+        "message_dto.CreateMessageDto": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "example": "Olá equipe, temos reunião às 14h!"
+                },
+                "links": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "https://docs.empresa.com/planejamento"
+                    ]
+                },
+                "medias": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "123"
+                    ]
+                },
+                "mentions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "123"
+                    ]
+                }
+            }
+        },
+        "message_dto.MentionDto": {
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "message_dto.MessageDto": {
+            "type": "object",
+            "required": [
+                "content"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "maxLength": 2000,
+                    "minLength": 1,
+                    "example": "Bem-vindos ao canal!"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2025-10-10T14:30:00Z"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "msg-001"
+                },
+                "links": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "https://exemplo.com"
+                    ]
+                },
+                "medias": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/chat_shared.Media"
+                    }
+                },
+                "mentions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/message_dto.MentionDto"
+                    }
+                },
+                "user": {
+                    "$ref": "#/definitions/message_dto.User"
+                }
+            }
+        },
+        "message_dto.ResponseMessageList": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/message_dto.MessageDto"
+                    }
+                },
+                "limit": {
+                    "type": "integer",
+                    "maximum": 5000,
+                    "minimum": 1,
+                    "example": 10
+                },
+                "page": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "message_dto.User": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "avatar": {
+                    "type": "string",
+                    "example": "https://cdn.exemplo.com/avatar123.png"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "joao.silva@empresa.com"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "user-123"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string",
+                    "example": "João Silva"
+                },
+                "role": {
+                    "type": "string",
+                    "example": "moderator"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "online"
+                }
+            }
+        },
+        "office_dto.AddUserToOfficeDto": {
+            "type": "object",
+            "required": [
+                "userId"
+            ],
+            "properties": {
+                "role": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/office_dto.ENUM_OFFICE_ROLE"
+                        }
+                    ],
+                    "example": "USER"
+                },
+                "userId": {
+                    "type": "string",
+                    "example": "65d5f5a5f5a5f5a5f5a5f5a5"
+                }
+            }
+        },
+        "office_dto.CreateEmailInvitationsDto": {
+            "type": "object",
+            "required": [
+                "emails",
+                "redirectUrl"
+            ],
+            "properties": {
+                "emails": {
+                    "type": "array",
+                    "maxItems": 50,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "redirectUrl": {
+                    "type": "string"
+                }
+            }
+        },
+        "office_dto.CreateOfficeDto": {
+            "type": "object",
+            "required": [
+                "description",
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "Escritorio com o intuito de ser paulistano"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Escritório Paulista"
+                }
+            }
+        },
+        "office_dto.ENUM_FILTER_OFFICE": {
+            "type": "string",
+            "enum": [
+                "ALL",
+                "OWNER",
+                "PARTICIPATING"
+            ],
+            "x-enum-varnames": [
+                "OFFICE_FILTER_LIST_ALL",
+                "OFFICE_FILTER_LIST_OWNER",
+                "OFFICE_FILTER_LIST_PARTICIPATING"
+            ]
+        },
+        "office_dto.ENUM_OFFICE_ROLE": {
+            "type": "string",
+            "enum": [
+                "USER",
+                "EDITOR",
+                "OWNER"
+            ],
+            "x-enum-varnames": [
+                "OFFICE_ROLE_USER",
+                "OFFICE_ROLE_EDITOR",
+                "OFFICE_ROLE_OWNER"
+            ]
+        },
+        "office_dto.ResponseCreateOfficeDto": {
+            "type": "object",
+            "required": [
+                "description",
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "Escritorio com o intuito de ser paulistano"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Escritório Paulista"
+                }
+            }
+        },
+        "team_dto.CreateTeam": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "managerId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                }
+            }
+        },
+        "team_dto.ENUM_TEAM_ROLE": {
+            "type": "string",
+            "enum": [
+                "ADMIN",
+                "MEMBER",
+                "MANAGER"
+            ],
+            "x-enum-varnames": [
+                "ENUM_ROLE_ADMIN",
+                "ENUM_ROLE_MEMBER",
+                "ENUM_ROLE_MANAGER"
+            ]
+        },
+        "team_dto.ListTeam": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "manager": {
+                    "$ref": "#/definitions/team_dto.Member"
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/team_dto.Member"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "team_dto.Member": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "role": {
+                    "$ref": "#/definitions/team_dto.ENUM_TEAM_ROLE"
+                }
+            }
+        },
+        "team_dto.PutMember": {
+            "type": "object",
+            "required": [
+                "id",
+                "role"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "role": {
+                    "minLength": 1,
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/team_dto.ENUM_TEAM_ROLE"
+                        }
+                    ]
+                }
+            }
+        },
+        "team_dto.Team": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_dto.User": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "birthday": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_office_dto.ENUM_USER_OFFICE_STATUS": {
+            "type": "string",
+            "enum": [
+                "PENDING",
+                "ACCEPTED",
+                "REJECTED",
+                "BANNED"
+            ],
+            "x-enum-varnames": [
+                "PENDING",
+                "ACCEPTED",
+                "REJECTED",
+                "BANNED"
+            ]
+        },
+        "user_office_dto.ENUM_USER_VOICE_STATUS": {
+            "type": "string",
+            "enum": [
+                "ONLINE",
+                "BUSY"
+            ],
+            "x-enum-varnames": [
+                "ONLINE",
+                "BUSY"
+            ]
+        },
+        "user_office_dto.ListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/user_office_dto.UserCompleteInfo"
+                    }
+                },
+                "limit": {
+                    "type": "integer",
+                    "maximum": 5000,
+                    "minimum": 1,
+                    "example": 10
+                },
+                "page": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "example": 1
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "user_office_dto.UserCompleteInfo": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "birthday": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deactivatedAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "inOffice": {
+                    "$ref": "#/definitions/user_office_dto.UserOfficeInfo"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "teams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/team_dto.Team"
+                    }
+                }
+            }
+        },
+        "user_office_dto.UserOfficeInfo": {
+            "type": "object",
+            "properties": {
+                "enteredAt": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "role": {
+                    "$ref": "#/definitions/office_dto.ENUM_OFFICE_ROLE"
+                },
+                "status": {
+                    "enum": [
+                        "ONLINE",
+                        "BUSY"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/user_office_dto.ENUM_USER_VOICE_STATUS"
+                        }
+                    ]
+                },
+                "statusOffice": {
+                    "$ref": "#/definitions/user_office_dto.ENUM_USER_OFFICE_STATUS"
+                },
+                "statusReason": {
+                    "type": "string",
+                    "maxLength": 255
+                }
+            }
+        },
+        "util_dto.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "message": {
+                    "type": "string",
+                    "example": "Tudo certo!!"
+                },
+                "statusCode": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer Auth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

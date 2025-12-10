@@ -1,0 +1,1967 @@
+basePath: /
+definitions:
+  auth_dto.EmailCode:
+    properties:
+      code:
+        type: string
+      email:
+        example: exemplo@mail.com
+        type: string
+    required:
+    - email
+    type: object
+  auth_dto.EmailDto:
+    properties:
+      email:
+        example: exemplo@mail.com
+        type: string
+    required:
+    - email
+    type: object
+  chat_controller.uploadMediaChat:
+    properties:
+      fileIds:
+        example:
+        - "123"
+        items:
+          type: string
+        type: array
+    type: object
+  chat_dto.ChatDto:
+    properties:
+      createdAt:
+        example: "2025-10-10T15:04:05Z"
+        type: string
+      description:
+        example: Chat principal do time Alpha
+        type: string
+      flag:
+        example: general
+        type: string
+      id:
+        example: "123"
+        type: string
+      messages:
+        items:
+          $ref: '#/definitions/message_dto.MessageDto'
+        type: array
+      name:
+        example: Equipe de Projeto Alpha
+        type: string
+      participants:
+        items:
+          $ref: '#/definitions/chat_shared.User'
+        type: array
+      teams:
+        items:
+          $ref: '#/definitions/team_dto.ListTeam'
+        type: array
+      totalMentions:
+        example: 2
+        type: integer
+      totalUnreaded:
+        example: 4
+        type: integer
+    type: object
+  chat_dto.CreateChatDto:
+    properties:
+      description:
+        example: Canal para discussões da equipe de marketing
+        maxLength: 255
+        type: string
+      name:
+        example: Novo Canal de Marketing
+        minLength: 3
+        type: string
+    required:
+    - name
+    type: object
+  chat_dto.ENUM_FILTER_CHAT:
+    enum:
+    - ALL
+    - TEAMS
+    - GROUPS
+    - UNREADEDS
+    type: string
+    x-enum-varnames:
+    - ALL
+    - TEAMS
+    - GROUPS
+    - UNREADEDS
+  chat_dto.MediaFromGallery:
+    properties:
+      fileId:
+        example: file-789
+        type: string
+      linkedTo:
+        items:
+          $ref: '#/definitions/chat_dto.MediaLinkedTo'
+        type: array
+      name:
+        example: documento.pdf
+        type: string
+      size:
+        type: integer
+      type:
+        type: string
+      url:
+        example: https://cdn.exemplo.com/uploads/doc.pdf
+        type: string
+    type: object
+  chat_dto.MediaLinkedTo:
+    properties:
+      messageId:
+        type: string
+      user:
+        $ref: '#/definitions/chat_shared.User'
+    type: object
+  chat_dto.ResponseChatGallery:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/chat_dto.MediaFromGallery'
+        type: array
+      limit:
+        example: 10
+        maximum: 5000
+        minimum: 1
+        type: integer
+      page:
+        example: 1
+        minimum: 1
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  chat_dto.ResponseChatList:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/chat_dto.ChatDto'
+        type: array
+      limit:
+        example: 10
+        maximum: 5000
+        minimum: 1
+        type: integer
+      page:
+        example: 1
+        minimum: 1
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  chat_participant_dto.AddTeamDto:
+    properties:
+      role:
+        example: admin
+        type: string
+      teamId:
+        example: team-xyz-789
+        type: string
+    type: object
+  chat_participant_dto.AddUserDto:
+    properties:
+      role:
+        example: member
+        type: string
+      userId:
+        example: user-abc-123
+        type: string
+    type: object
+  chat_shared.Media:
+    properties:
+      fileId:
+        example: file-789
+        type: string
+      name:
+        example: documento.pdf
+        type: string
+      size:
+        type: integer
+      type:
+        type: string
+      url:
+        example: https://cdn.exemplo.com/uploads/doc.pdf
+        type: string
+    type: object
+  chat_shared.User:
+    properties:
+      active:
+        example: true
+        type: boolean
+      avatar:
+        example: https://cdn.exemplo.com/avatar123.png
+        type: string
+      email:
+        example: joao.silva@empresa.com
+        type: string
+      id:
+        example: user-123
+        type: string
+      name:
+        type: string
+      nickname:
+        example: João Silva
+        type: string
+      role:
+        example: moderator
+        type: string
+      status:
+        example: online
+        type: string
+    type: object
+  message_dto.CreateMessageDto:
+    properties:
+      content:
+        example: Olá equipe, temos reunião às 14h!
+        type: string
+      links:
+        example:
+        - https://docs.empresa.com/planejamento
+        items:
+          type: string
+        type: array
+      medias:
+        example:
+        - "123"
+        items:
+          type: string
+        type: array
+      mentions:
+        example:
+        - "123"
+        items:
+          type: string
+        type: array
+    type: object
+  message_dto.MentionDto:
+    properties:
+      userId:
+        type: string
+    type: object
+  message_dto.MessageDto:
+    properties:
+      content:
+        example: Bem-vindos ao canal!
+        maxLength: 2000
+        minLength: 1
+        type: string
+      createdAt:
+        example: "2025-10-10T14:30:00Z"
+        type: string
+      id:
+        example: msg-001
+        type: string
+      links:
+        example:
+        - https://exemplo.com
+        items:
+          type: string
+        type: array
+      medias:
+        items:
+          $ref: '#/definitions/chat_shared.Media'
+        type: array
+      mentions:
+        items:
+          $ref: '#/definitions/message_dto.MentionDto'
+        type: array
+      user:
+        $ref: '#/definitions/message_dto.User'
+    required:
+    - content
+    type: object
+  message_dto.ResponseMessageList:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/message_dto.MessageDto'
+        type: array
+      limit:
+        example: 10
+        maximum: 5000
+        minimum: 1
+        type: integer
+      page:
+        example: 1
+        minimum: 1
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  message_dto.User:
+    properties:
+      active:
+        example: true
+        type: boolean
+      avatar:
+        example: https://cdn.exemplo.com/avatar123.png
+        type: string
+      email:
+        example: joao.silva@empresa.com
+        type: string
+      id:
+        example: user-123
+        type: string
+      name:
+        type: string
+      nickname:
+        example: João Silva
+        type: string
+      role:
+        example: moderator
+        type: string
+      status:
+        example: online
+        type: string
+    type: object
+  office_dto.AddUserToOfficeDto:
+    properties:
+      role:
+        allOf:
+        - $ref: '#/definitions/office_dto.ENUM_OFFICE_ROLE'
+        example: USER
+      userId:
+        example: 65d5f5a5f5a5f5a5f5a5f5a5
+        type: string
+    required:
+    - userId
+    type: object
+  office_dto.CreateEmailInvitationsDto:
+    properties:
+      emails:
+        items:
+          type: string
+        maxItems: 50
+        type: array
+      redirectUrl:
+        type: string
+    required:
+    - emails
+    - redirectUrl
+    type: object
+  office_dto.CreateOfficeDto:
+    properties:
+      description:
+        example: Escritorio com o intuito de ser paulistano
+        type: string
+      name:
+        example: Escritório Paulista
+        type: string
+    required:
+    - description
+    - name
+    type: object
+  office_dto.ENUM_FILTER_OFFICE:
+    enum:
+    - ALL
+    - OWNER
+    - PARTICIPATING
+    type: string
+    x-enum-varnames:
+    - OFFICE_FILTER_LIST_ALL
+    - OFFICE_FILTER_LIST_OWNER
+    - OFFICE_FILTER_LIST_PARTICIPATING
+  office_dto.ENUM_OFFICE_ROLE:
+    enum:
+    - USER
+    - EDITOR
+    - OWNER
+    type: string
+    x-enum-varnames:
+    - OFFICE_ROLE_USER
+    - OFFICE_ROLE_EDITOR
+    - OFFICE_ROLE_OWNER
+  office_dto.ResponseCreateOfficeDto:
+    properties:
+      description:
+        example: Escritorio com o intuito de ser paulistano
+        type: string
+      id:
+        type: string
+      name:
+        example: Escritório Paulista
+        type: string
+    required:
+    - description
+    - name
+    type: object
+  team_dto.CreateTeam:
+    properties:
+      description:
+        type: string
+      managerId:
+        type: string
+      name:
+        maxLength: 100
+        minLength: 1
+        type: string
+    required:
+    - name
+    type: object
+  team_dto.ENUM_TEAM_ROLE:
+    enum:
+    - ADMIN
+    - MEMBER
+    - MANAGER
+    type: string
+    x-enum-varnames:
+    - ENUM_ROLE_ADMIN
+    - ENUM_ROLE_MEMBER
+    - ENUM_ROLE_MANAGER
+  team_dto.ListTeam:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      manager:
+        $ref: '#/definitions/team_dto.Member'
+      members:
+        items:
+          $ref: '#/definitions/team_dto.Member'
+        type: array
+      name:
+        type: string
+    type: object
+  team_dto.Member:
+    properties:
+      avatar:
+        type: string
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      nickname:
+        type: string
+      role:
+        $ref: '#/definitions/team_dto.ENUM_TEAM_ROLE'
+    type: object
+  team_dto.PutMember:
+    properties:
+      id:
+        minLength: 1
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/team_dto.ENUM_TEAM_ROLE'
+        minLength: 1
+    required:
+    - id
+    - role
+    type: object
+  team_dto.Team:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  user_dto.User:
+    properties:
+      avatar:
+        type: string
+      birthday:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  user_office_dto.ENUM_USER_OFFICE_STATUS:
+    enum:
+    - PENDING
+    - ACCEPTED
+    - REJECTED
+    - BANNED
+    type: string
+    x-enum-varnames:
+    - PENDING
+    - ACCEPTED
+    - REJECTED
+    - BANNED
+  user_office_dto.ENUM_USER_VOICE_STATUS:
+    enum:
+    - ONLINE
+    - BUSY
+    type: string
+    x-enum-varnames:
+    - ONLINE
+    - BUSY
+  user_office_dto.ListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/user_office_dto.UserCompleteInfo'
+        type: array
+      limit:
+        example: 10
+        maximum: 5000
+        minimum: 1
+        type: integer
+      page:
+        example: 1
+        minimum: 1
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  user_office_dto.UserCompleteInfo:
+    properties:
+      avatar:
+        type: string
+      birthday:
+        type: string
+      createdAt:
+        type: string
+      deactivatedAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      inOffice:
+        $ref: '#/definitions/user_office_dto.UserOfficeInfo'
+      name:
+        type: string
+      teams:
+        items:
+          $ref: '#/definitions/team_dto.Team'
+        type: array
+    type: object
+  user_office_dto.UserOfficeInfo:
+    properties:
+      enteredAt:
+        type: string
+      nickname:
+        maxLength: 50
+        type: string
+      role:
+        $ref: '#/definitions/office_dto.ENUM_OFFICE_ROLE'
+      status:
+        allOf:
+        - $ref: '#/definitions/user_office_dto.ENUM_USER_VOICE_STATUS'
+        enum:
+        - ONLINE
+        - BUSY
+      statusOffice:
+        $ref: '#/definitions/user_office_dto.ENUM_USER_OFFICE_STATUS'
+      statusReason:
+        maxLength: 255
+        type: string
+    type: object
+  util_dto.Response:
+    properties:
+      data: {}
+      message:
+        example: Tudo certo!!
+        type: string
+      statusCode:
+        example: 200
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: Documentação do melhor escritorio do mundo, feito em GO
+  title: Escritorio PINATALK
+  version: '@0.0.1'
+paths:
+  /auth/send-code-to-email:
+    post:
+      consumes:
+      - application/json
+      description: Envia um codigo para o email
+      parameters:
+      - description: Credenciais de login
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth_dto.EmailDto'
+      produces:
+      - application/json
+      responses: {}
+      summary: Login via email
+      tags:
+      - Auth
+  /auth/validate-code:
+    post:
+      consumes:
+      - application/json
+      description: Envia o codigo do seu email em troca de um token massa
+      parameters:
+      - description: Credenciais de login
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth_dto.EmailCode'
+      produces:
+      - application/json
+      responses: {}
+      summary: Recuperar codigo
+      tags:
+      - Auth
+  /hub/create-office:
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo escritório vinculado a um hub
+      parameters:
+      - description: Dados do Escritório
+        in: body
+        name: office
+        required: true
+        schema:
+          $ref: '#/definitions/office_dto.CreateOfficeDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Retorna o ID do escritório criado
+          schema:
+            allOf:
+            - $ref: '#/definitions/util_dto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/office_dto.ResponseCreateOfficeDto'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Cria um novo escritório
+      tags:
+      - Hub
+  /hub/list-invitations:
+    get:
+      consumes:
+      - application/json
+      description: Listagem de convites
+      parameters:
+      - example: 10
+        in: query
+        maximum: 5000
+        minimum: 1
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Retorna uma lista de offices
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro na validação dos parâmetros
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Listar convites
+      tags:
+      - Hub
+  /hub/list-offices:
+    get:
+      consumes:
+      - application/json
+      description: Listagem de escritorios
+      parameters:
+      - example: 10
+        in: query
+        maximum: 5000
+        minimum: 1
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - enum:
+        - ALL
+        - OWNER
+        - PARTICIPATING
+        in: query
+        name: status
+        type: string
+        x-enum-varnames:
+        - OFFICE_FILTER_LIST_ALL
+        - OFFICE_FILTER_LIST_OWNER
+        - OFFICE_FILTER_LIST_PARTICIPATING
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Retorna uma lista de offices
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro na validação dos parâmetros
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Listar escritorios do HUB
+      tags:
+      - Hub
+  /hub/office/{officeId}/:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Dados do Escritório
+        in: body
+        name: office
+        required: true
+        schema:
+          $ref: '#/definitions/office_dto.CreateOfficeDto'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Editar seu escritorio
+      tags:
+      - Hub
+  /hub/office/{officeId}/accept-invitation:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses: {}
+      summary: Processar convite para escritório
+      tags:
+      - Hub/Escritorio
+  /hub/office/{officeId}/generate-invitation:
+    post:
+      consumes:
+      - application/json
+      description: Gera um token de convite único para permitir que usuários se juntem
+        a um escritório específico
+      parameters:
+      - description: ID do escritório
+        in: path
+        name: officeId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Gerar token de convite para escritório
+      tags:
+      - Hub/Escritorio
+  /hub/office/{officeId}/link-user:
+    put:
+      consumes:
+      - application/json
+      description: Vincula usuário a um escritório existente ou ativa ele novamente
+        caso já tenha tido um vinculo anterior
+      parameters:
+      - description: ID do Office
+        example: 65d5f5a5f5a5f5a5f5a5f5a5
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - description: Dados de vinculação
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/office_dto.AddUserToOfficeDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Confirmação de sucesso
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Adiciona/Reativa usuário a um escritório
+      tags:
+      - Hub/Escritorio
+  /hub/office/{officeId}/remove-avatar:
+    delete:
+      description: Deletar o avatar do escritorio
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resposta de sucesso com mensagem
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro de validação ou requisição inválida
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Erro interno do servidor
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Deletar avatar do escritorio
+      tags:
+      - Hub/Escritorio
+  /hub/office/{officeId}/remove-user/{userId}:
+    delete:
+      consumes:
+      - application/json
+      description: Usuário fica inabilitado no sistema (ainda aparecendo em listagens
+        de usuários), não se pode adicionar ele em times ou chats
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Confirmação de sucesso
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Remover usuário do escritorio
+      tags:
+      - Hub/Escritorio
+  /hub/office/{officeId}/send-invitation-to-email:
+    post:
+      consumes:
+      - application/json
+      description: Manda
+      parameters:
+      - description: Dados do convite
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/office_dto.CreateEmailInvitationsDto'
+      - description: ID do escritório
+        in: path
+        name: officeId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Envia convite para email de usuarios
+      tags:
+      - Hub/Escritorio
+  /hub/office/{officeId}/update-avatar:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Atualiza o avatar do escritorio
+      parameters:
+      - description: Arquivo de imagem do avatar
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resposta de sucesso com mensagem
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro de validação ou requisição inválida
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Erro interno do servidor
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Atualiza avatar do escritorio
+      tags:
+      - Hub/Escritorio
+  /hub/process-invitation:
+    post:
+      consumes:
+      - application/json
+      description: Valida e processa um token de convite, adicionando o usuário ao
+        escritório correspondente
+      parameters:
+      - description: Token de convite
+        in: query
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Processar convite para escritório
+      tags:
+      - Hub
+  /office/{officeId}/chat:
+    get:
+      consumes:
+      - application/json
+      description: listagem de chat
+      parameters:
+      - example: 10
+        in: query
+        maximum: 5000
+        minimum: 1
+        name: limit
+        type: integer
+      - example: Chat radical
+        in: query
+        name: name
+        type: string
+      - example: 1
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - enum:
+        - ALL
+        - TEAMS
+        - GROUPS
+        - UNREADEDS
+        example: ALL
+        in: query
+        name: status
+        type: string
+        x-enum-varnames:
+        - ALL
+        - TEAMS
+        - GROUPS
+        - UNREADEDS
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Retorna o ID do chat criado
+          schema:
+            allOf:
+            - $ref: '#/definitions/util_dto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/chat_dto.ResponseChatList'
+              type: object
+      summary: Lista os chats
+      tags:
+      - Chat
+    post:
+      consumes:
+      - application/json
+      description: Cria uma nova sala de chat
+      parameters:
+      - description: Dados do Chat
+        in: body
+        name: chat
+        required: true
+        schema:
+          $ref: '#/definitions/chat_dto.CreateChatDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Retorna o ID do chat criado
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Cria um novo chat
+      tags:
+      - Chat
+  /office/{officeId}/chat/{chatId}:
+    delete:
+      consumes:
+      - application/json
+      description: Deleta uma sala de chat existente, desde que o usuário tenha permissão
+        de administrador
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Retorna mensagem de sucesso
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Deleta um chat
+      tags:
+      - Chat
+    get:
+      consumes:
+      - application/json
+      description: pega um chat né
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Retorna mensagem de sucesso
+          schema:
+            allOf:
+            - $ref: '#/definitions/util_dto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/chat_dto.ChatDto'
+              type: object
+      summary: Pegar Chat
+      tags:
+      - Chat
+  /office/{officeId}/chat/{chatId}/add-team:
+    put:
+      consumes:
+      - application/json
+      description: Adiciona um time a uma sala de chat ou atualiza role atual do time
+        geral
+      parameters:
+      - description: ID do escritório
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - description: ID do chat
+        in: path
+        name: chatId
+        required: true
+        type: string
+      - description: Dados do usuário a ser adicionado
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/chat_participant_dto.AddTeamDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Mensagem de sucesso
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro de validação ou requisição inválida
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Usuário sem permissão de administrador
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Adiciona/Atualiza um time ao chat
+      tags:
+      - Chat/Time
+  /office/{officeId}/chat/{chatId}/add-user:
+    put:
+      consumes:
+      - application/json
+      description: Adiciona um usuário a um chat ou atualiza sua role.
+      parameters:
+      - description: ID do escritório
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - description: ID do chat
+        in: path
+        name: chatId
+        required: true
+        type: string
+      - description: Dados do usuário a ser adicionado
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/chat_participant_dto.AddUserDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Mensagem de sucesso
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro de validação ou requisição inválida
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Usuário sem permissão de administrador
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Adicionar/Atualizar usuário em chat
+      tags:
+      - Chat/Usuario
+  /office/{officeId}/chat/{chatId}/list-messages:
+    get:
+      consumes:
+      - application/json
+      description: listagem de mensagens
+      parameters:
+      - example: 10
+        in: query
+        maximum: 5000
+        minimum: 1
+        name: limit
+        type: integer
+      - example: Chat radical
+        in: query
+        name: name
+        type: string
+      - example: 1
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Retorna o ID do chat criado
+          schema:
+            allOf:
+            - $ref: '#/definitions/util_dto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/message_dto.ResponseMessageList'
+              type: object
+      summary: Lista as mensagens do chat
+      tags:
+      - Chat/Mensagens
+  /office/{officeId}/chat/{chatId}/marked-all-messages-as-viewed:
+    patch:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses: {}
+      summary: Marcar como visualizada todas as mensagens do chat
+      tags:
+      - Chat/Mensagens
+  /office/{officeId}/chat/{chatId}/medias:
+    get:
+      description: aaa
+      parameters:
+      - example: 10
+        in: query
+        maximum: 5000
+        minimum: 1
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - collectionFormat: csv
+        in: query
+        items:
+          type: string
+        name: types
+        type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Retorna um array com os IDs dos arquivos enviados
+          schema:
+            allOf:
+            - $ref: '#/definitions/util_dto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/chat_dto.ResponseChatGallery'
+              type: object
+      summary: Buscar midias do chat
+      tags:
+      - Chat/Media
+  /office/{officeId}/chat/{chatId}/medias-count:
+    get:
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Retorna um array com os IDs dos arquivos enviados
+          schema:
+            allOf:
+            - $ref: '#/definitions/util_dto.Response'
+            - properties:
+                total:
+                  type: integer
+              type: object
+      summary: Contar medias e links do chat
+      tags:
+      - Chat/Media
+  /office/{officeId}/chat/{chatId}/new-message:
+    post:
+      consumes:
+      - application/json
+      description: Adiciona mensagem a um chat existente
+      parameters:
+      - description: Dados da Mensagem
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/message_dto.CreateMessageDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Retorna os dados da mensagem
+          schema:
+            allOf:
+            - $ref: '#/definitions/util_dto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/message_dto.MessageDto'
+              type: object
+      summary: Cria uma nova mensagem
+      tags:
+      - Chat/Mensagens
+  /office/{officeId}/chat/{chatId}/remove-team/{teamId}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove um time específico de uma sala de chat existente
+      parameters:
+      - description: ID do escritório
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - description: ID do chat
+        in: path
+        name: chatId
+        required: true
+        type: string
+      - description: ID do time
+        in: path
+        name: teamId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Time removido com sucesso
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro de validação ou requisição inválida
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Usuário sem permissão de administrador
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Remover um time de um chat
+      tags:
+      - Chat/Time
+  /office/{officeId}/chat/{chatId}/remove-user/{userId}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove um usuário específico de uma sala de chat existente
+      parameters:
+      - description: ID do escritório
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - description: ID do chat
+        in: path
+        name: chatId
+        required: true
+        type: string
+      - description: ID do usuário
+        in: path
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Usuário removido com sucesso
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro de validação ou requisição inválida
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Usuário sem permissão de administrador
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Remover um usuário de um chat
+      tags:
+      - Chat/Usuario
+  /office/{officeId}/chat/{chatId}/update-avatar:
+    put:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: Arquivo de imagem do avatar
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resposta de sucesso com mensagem
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro de validação ou requisição inválida
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Erro interno do servidor
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Atualiza avatar do chat
+      tags:
+      - Chat
+  /office/{officeId}/chat/{chatId}/upload-media:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Faz o upload de múltiplos arquivos de mídia para um chat especificado,
+        associando-os ao usuário autenticado. Frontend deve associar os fileIDs com
+        a mensagem que deseja enviar na rota de envio de mensagem
+      parameters:
+      - description: ID do chat para o qual a mídia será enviada
+        in: path
+        name: chatId
+        required: true
+        type: string
+      - description: Arquivos de mídia para upload
+        in: formData
+        name: files
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Retorna um array com os IDs dos arquivos enviados
+          schema:
+            allOf:
+            - $ref: '#/definitions/util_dto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/chat_controller.uploadMediaChat'
+              type: object
+      summary: Fazer upload de múltiplos arquivos de mídia para um chat
+      tags:
+      - Chat/Media
+  /office/{officeId}/chat/one-a-one/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: Basicamente tenta encontrar um chat privado entre você e outro
+        usuário, se não existir, um vai ser providenciado a você
+      produces:
+      - application/json
+      responses: {}
+      summary: Buscar chat one-a-one
+      tags:
+      - Chat
+  /office/{officeId}/notifications:
+    get:
+      consumes:
+      - application/json
+      description: Recupera uma lista paginada de notificações para um usuário e escritório
+        específicos com filtro opcional de leitura
+      parameters:
+      - description: ID do escritório
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - description: Filtrar por status de leitura
+        in: query
+        name: read
+        type: boolean
+      - default: 0
+        description: Número da página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Itens por página
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Listar notificações para um usuário
+      tags:
+      - Notificacao
+  /office/{officeId}/notifications/{notificationId}/read:
+    put:
+      consumes:
+      - application/json
+      description: Marca uma notificação específica como lida
+      parameters:
+      - description: ID da notificação
+        in: path
+        name: notificationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Marcar uma notificação como lida
+      tags:
+      - Notificacao
+  /office/{officeId}/room:
+    post:
+      consumes:
+      - application/json
+      description: SFU chama essa rota para criar um chat temporario vincuulado a
+        ele
+      parameters:
+      - description: ID do escritório
+        in: path
+        name: officeId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Cria uma nova room (SFU EXCLUSIVE)
+      tags:
+      - Room
+  /office/{officeId}/room/delete-chat/{chatId}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - example: 10
+        in: query
+        maximum: 5000
+        minimum: 1
+        name: limit
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - example: 1
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Retorna o ID do chat criado
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete chat room (SFU EXCLUSIVE)
+      tags:
+      - Room
+  /office/{officeId}/team:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista paginada de todos os times disponíveis
+      parameters:
+      - example: 10
+        in: query
+        maximum: 5000
+        minimum: 1
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Listar todos os times
+      tags:
+      - Time
+    post:
+      consumes:
+      - application/json
+      description: Cria um time e um chat associado
+      parameters:
+      - description: Office ID
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - description: Team creation data
+        in: body
+        name: team
+        required: true
+        schema:
+          $ref: '#/definitions/team_dto.CreateTeam'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Returns the created team ID
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Criar time
+      tags:
+      - Time
+  /office/{officeId}/team/{teamId}:
+    delete:
+      consumes:
+      - application/json
+      description: Exclui dados do time (talvez apenas desabilitar dependendo do decorrer
+        do projeto)
+      produces:
+      - application/json
+      responses: {}
+      summary: Excluir time
+      tags:
+      - Time
+    get:
+      consumes:
+      - application/json
+      description: Retorna os detalhes completos de um time específico pelo ID
+      produces:
+      - application/json
+      responses: {}
+      summary: Obter time específico
+      tags:
+      - Time
+    put:
+      consumes:
+      - application/json
+      description: Cria um time e um chat associado
+      parameters:
+      - description: Office ID
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - description: Team creation data
+        in: body
+        name: team
+        required: true
+        schema:
+          $ref: '#/definitions/team_dto.CreateTeam'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Returns the created team ID
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Criar time
+      tags:
+      - Time
+  /office/{officeId}/team/{teamId}/add-member:
+    post:
+      consumes:
+      - application/json
+      description: Adiciona um membro e associa ele a tudo do time
+      parameters:
+      - description: Office ID
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - description: Team member data
+        in: body
+        name: team
+        required: true
+        schema:
+          $ref: '#/definitions/team_dto.PutMember'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Returns the created team ID
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Adicionar membro
+      tags:
+      - Time
+  /office/{officeId}/team/{teamId}/edit-member:
+    put:
+      consumes:
+      - application/json
+      description: Edita a role do membro do time
+      parameters:
+      - description: Office ID
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - description: Team member data
+        in: body
+        name: team
+        required: true
+        schema:
+          $ref: '#/definitions/team_dto.PutMember'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Returns the created team ID
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Editar membro
+      tags:
+      - Time
+  /office/{officeId}/team/{teamId}/remove-member/{userId}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove um membro e dessacoia de chats
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Invalid request data
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Remover membro
+      tags:
+      - Time
+  /office/{officeId}/user:
+    get:
+      consumes:
+      - application/json
+      description: Recupera uma lista de usuários associados ao escritório especificado,
+        filtrada
+      parameters:
+      - description: ID do escritório
+        format: uuid
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - in: query
+        name: active
+        type: boolean
+      - example: 10
+        in: query
+        maximum: 5000
+        minimum: 1
+        name: limit
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - example: 1
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - collectionFormat: csv
+        in: query
+        items:
+          type: string
+        name: teams
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resposta de sucesso com a lista de usuários
+          schema:
+            allOf:
+            - $ref: '#/definitions/util_dto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/user_office_dto.ListResponse'
+              type: object
+        "400":
+          description: Requisição inválida com mensagem de erro
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Listar usuários de um escritório
+      tags:
+      - Usuário/Escritorio
+  /office/{officeId}/user/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: Retorna informações dele
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resposta de sucesso com a lista de usuários
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Requisição inválida com mensagem de erro
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Pegar usuário do escritorio
+      tags:
+      - Usuário/Escritorio
+  /office/{officeId}/user/remove-avatar:
+    delete:
+      description: Deleta o avatar do usuário
+      parameters:
+      - description: Arquivo de imagem do avatar
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resposta de sucesso com mensagem
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro de validação ou requisição inválida
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Erro interno do servidor
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Deleta avatar do usuário
+      tags:
+      - Usuário/Escritorio
+  /office/{officeId}/user/update-avatar:
+    put:
+      consumes:
+      - multipart/form-data
+      description: Atualiza o avatar do usuário
+      parameters:
+      - description: Arquivo de imagem do avatar
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resposta de sucesso com mensagem
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro de validação ou requisição inválida
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Erro interno do servidor
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Atualiza avatar do usuário
+      tags:
+      - Usuário/Escritorio
+  /office/{officeId}/user/update-info:
+    put:
+      consumes:
+      - application/json
+      description: Atualiza as informações do usuário (fornecidas no corpo da requisição)
+        para o usuário e escritório especificados.
+      parameters:
+      - description: ID do escritório
+        in: path
+        name: officeId
+        required: true
+        type: string
+      - description: Informações do usuário a serem atualizadas
+        in: body
+        name: userInfo
+        required: true
+        schema:
+          $ref: '#/definitions/user_office_dto.UserOfficeInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resposta de sucesso com mensagem
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Atualiza informações do usuário em um escritório
+      tags:
+      - Usuário/Escritorio
+  /user/info:
+    get:
+      description: Alguem me da um estagiario 2.0
+      operationId: userController_GetUserInfo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resposta de sucesso com mensagem
+          schema:
+            allOf:
+            - $ref: '#/definitions/util_dto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/user_dto.User'
+              type: object
+      summary: Informações de usuário logado
+      tags:
+      - Usuário
+    post:
+      description: Alguem me da um estagiario 2.0
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resposta de sucesso com mensagem
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Erro de validação ou requisição inválida
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Erro interno do servidor
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Atualiza informações essenciais do usuário
+      tags:
+      - Usuário
+securityDefinitions:
+  Bearer Auth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

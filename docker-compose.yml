@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16-bullseye
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: escritorio-db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+volumes:
+  pg_data:
+
+networks:
+  app-network:
+    driver: bridge
